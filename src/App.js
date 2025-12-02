@@ -1,24 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
+import { TodoBox } from './components/TodoBox';
+import { useState } from 'react';
+import { TodoContext } from './context/TodoContext';
 
 function App() {
+  const [taskList, setTaskList] = useState([]);
+  const [task, setTask] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setTaskList([...taskList, { name: task, completed: false }]);
+    setTask("");
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <TodoContext.Provider value={{ taskList, setTaskList, task, setTask, handleSubmit }}>
+        <div className="container">
+        <TodoBox />
+        </div>
+      </TodoContext.Provider>
+    </>
   );
 }
 
